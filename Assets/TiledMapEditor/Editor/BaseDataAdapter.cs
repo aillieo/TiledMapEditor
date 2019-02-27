@@ -31,7 +31,7 @@ namespace AillieoUtils.TiledMapEditor
         TiledMapConfig LoadConfig()
         {
             TiledMapConfig config = null;
-            string filePath = string.Format("{0}/../{1}", Application.dataPath, ConfigPath);
+            string filePath = AssetPathToFilePath(ConfigPath);
             if (!File.Exists(filePath))
             {
                 config = ScriptableObject.CreateInstance<TiledMapConfig>();
@@ -49,6 +49,8 @@ namespace AillieoUtils.TiledMapEditor
         protected BaseDataAdapter()
         { }
 
+        // create map data asset as default
+        public abstract Object CreateDefaultData();
 
         // write map data to array GridData
         public abstract void LoadData(Object data);
@@ -81,6 +83,10 @@ namespace AillieoUtils.TiledMapEditor
             return Config.Items.Select(i => i.displayName).ToArray();
         }
 
+        public static string AssetPathToFilePath(string assetPath)
+        {
+            return string.Format("{0}/../{1}", Application.dataPath, assetPath);
+        }
 
 
     }

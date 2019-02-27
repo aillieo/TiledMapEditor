@@ -139,25 +139,25 @@ namespace AillieoUtils.TiledMapEditor
 
         void OnLoadClick()
         {
-            if (null == data)
-            {
-                Debug.LogError("没有指定数据");
-                return;
-            }
-
+            
             tiledMapDataModifier = new TiledMapDataModifier();
 
             Type adapterType = Type.GetType(AdapterNames[mModifyType]);
-            tiledMapDataModifier.BindDataAdapter(Activator.CreateInstance(adapterType) as BaseDataAdapter,data);
+
+            BaseDataAdapter adapter = Activator.CreateInstance(adapterType) as BaseDataAdapter;
+
+            if (null == data)
+                data = adapter.CreateDefaultData();
+
+            tiledMapDataModifier.BindDataAdapter(adapter, data);
 
             BrushTypeNames = tiledMapDataModifier.Data.GetEnumNames();
 
 
             var sv = SceneView.lastActiveSceneView;
-            sv.pivot = Vector3.zero;
-            sv.rotation = new Quaternion(1, 0, 0, 1);
-            sv.orthographic = true;
-            sv.size = 200.0f;
+            var range = tiledMapDataModifier.Data.Range;
+            Vector3 center = new Vector3(range.x/2, 0, range.y/2);
+            sv.LookAt(center, new Quaternion(1, 0, 0, 1), 200, true, false);
             sv.Repaint();
 
 

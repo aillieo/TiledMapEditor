@@ -25,10 +25,21 @@ namespace AillieoUtils.TiledMapEditor
 
         string assetFilePath;
 
+        public override Object CreateDefaultData()
+        {
+            string tmpAssetPath = "Assets/TiledMapEditor/defaultData.txt";
+            assetFilePath = AssetPathToFilePath(tmpAssetPath);
+
+            File.WriteAllText(assetFilePath, new string('0',81));
+            AssetDatabase.Refresh();
+
+            return AssetDatabase.LoadAssetAtPath<Object>(tmpAssetPath);
+        }
+
         public override void LoadData(Object data)
         {
             string assetPath = AssetDatabase.GetAssetPath(data);
-            assetFilePath = Application.dataPath + "/../" + assetPath;
+            assetFilePath = AssetPathToFilePath(assetPath);
 
             string textData = (data as TextAsset).text;
             textData = textData.Trim('\n').Trim('\r');
