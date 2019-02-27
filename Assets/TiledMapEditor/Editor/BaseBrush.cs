@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace TiledMapEditor
+namespace AillieoUtils.TiledMapEditor
 {
 
     public abstract class BaseBrush
@@ -64,7 +64,10 @@ namespace TiledMapEditor
             if (paint)
             {
                 FillEffectedGrid(intPos);
-                OnPaint?.Invoke(mEffectedGrids, mBrushValue);
+                if(null != OnPaint)
+                {
+                    OnPaint.Invoke(mEffectedGrids, mBrushValue);
+                }
             }
         }
 

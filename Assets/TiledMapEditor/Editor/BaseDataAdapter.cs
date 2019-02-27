@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 
-namespace TiledMapEditor
+namespace AillieoUtils.TiledMapEditor
 {
     public abstract class BaseDataAdapter
     {

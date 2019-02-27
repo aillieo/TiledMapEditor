@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-namespace TiledMapEditor
+namespace AillieoUtils.TiledMapEditor
 {
 
     public class TiledMapDataModifier
@@ -212,7 +212,8 @@ namespace TiledMapEditor
             Vector2 mousePos = Event.current.mousePosition;
             mousePos.y = Screen.height - mousePos.y - 40;
             Ray ray = SceneView.lastActiveSceneView.camera.ScreenPointToRay(mousePos);
-            if (Physics.Raycast(ray, out RaycastHit hitInfo))
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo))
             {
                 Vector2 vec = new Vector2(hitInfo.point.x, hitInfo.point.z);
                 Brush.UpdateBrushState(vec, pressed);

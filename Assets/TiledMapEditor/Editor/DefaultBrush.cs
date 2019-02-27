@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace TiledMapEditor
+namespace AillieoUtils.TiledMapEditor
 {
 
     public class DefaultBrush : BaseBrush

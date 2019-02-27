@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-namespace TiledMapEditor
+namespace AillieoUtils.TiledMapEditor
 {
 
     [System.Serializable]

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 
-namespace TiledMapEditor
+namespace AillieoUtils.TiledMapEditor
 {
     public class DefaultDataAdapter : BaseDataAdapter
     {

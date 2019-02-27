@@ -7,7 +7,7 @@ using System.Linq;
 using UObject = UnityEngine.Object;
 
 
-namespace TiledMapEditor
+namespace AillieoUtils.TiledMapEditor
 {
     public class TiledMapEditor : EditorWindow
     {
@@ -15,7 +15,7 @@ namespace TiledMapEditor
         static void OpenTiledMapEditor()
         {
             CollectAdapters();
-            TiledMapEditor window = GetWindow<TiledMapEditor>("TiledMapEditor");
+            GetWindow<TiledMapEditor>("TiledMapEditor");
         }
 
         // input
