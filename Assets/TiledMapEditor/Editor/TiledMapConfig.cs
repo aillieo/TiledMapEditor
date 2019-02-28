@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 
 namespace AillieoUtils.TiledMapEditor
@@ -20,6 +21,7 @@ namespace AillieoUtils.TiledMapEditor
     {
         public ConfigItem[] Items;
 
+        [NonSerialized]
         Dictionary<int, Color> colors = null;
 
         public Color GetColor(int enumValue)

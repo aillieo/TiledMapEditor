@@ -22,6 +22,11 @@ namespace AillieoUtils.TiledMapEditor
             return (char)(i + 48);
         }
 
+        public override Vector2Int Range{ get {
+                return mRange;
+            } }
+
+        Vector2Int mRange;
 
         string assetFilePath;
 
@@ -47,7 +52,7 @@ namespace AillieoUtils.TiledMapEditor
             var len = textData.Length;
             var size = Mathf.FloorToInt(Mathf.Sqrt(len));
 
-            Range = new Vector2Int(size, size);
+            mRange = new Vector2Int(size, size);
             GridData = new int[Range.x, Range.y];
 
             for (int i = 0; i < Range.x; ++i)

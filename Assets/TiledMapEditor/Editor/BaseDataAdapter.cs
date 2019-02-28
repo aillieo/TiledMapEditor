@@ -25,7 +25,7 @@ namespace AillieoUtils.TiledMapEditor
             }
         }
 
-        public Vector2Int Range { get; protected set; }
+        public abstract Vector2Int Range { get;}
         public int[,] GridData { get; protected set; }
 
         TiledMapConfig LoadConfig()
