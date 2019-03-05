@@ -11,11 +11,7 @@ namespace AillieoUtils.TiledMapEditor
     {
         public BaseDataAdapter Data { get; private set; }
 
-        Vector3[] mVertices = null;
-
-        Mesh[] mMesh;
-        Material[] mMat;
-        List<int>[] mTriangle;
+        Texture2D mapTexture;
 
         GameObject mRootGo;
 
@@ -49,53 +45,32 @@ namespace AillieoUtils.TiledMapEditor
 
         void InitDataInView()
         {
-
             int rangeX = Data.Range.x;
             int rangeZ = Data.Range.y;
 
-            mVertices = new Vector3[(rangeZ + 1) * (rangeX + 1)];
-
-            int idx = 0;
-            for (int i = 0; i < rangeX + 1; ++i)
-                for (int j = 0; j < rangeZ + 1; ++j)
-                {
-                    mVertices[idx++] = new Vector3(i, 0, j);
-                }
-
             int count = Data.GetEnumCount();
-            mMesh = new Mesh[count];
-            mMat = new Material[count];
 
             mRootGo = new GameObject("EditRoot");
             mRootGo.transform.localPosition = Vector3.zero;
             mRootGo.transform.localScale = Vector3.one;
             mRootGo.transform.localRotation = Quaternion.identity;
 
-            var collider = mRootGo.AddComponent<BoxCollider>();
-            collider.center = new Vector3(rangeX,0,rangeZ) * 0.5f;
-            collider.size = new Vector3(rangeX, 1, rangeZ);
-
             var names = Data.GetEnumNames();
 
             Shader shader = Shader.Find("AillieoUtils/TiledMapGrid");
+            GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            quad.name = "quad";
+            quad.transform.SetParent(mRootGo.transform, false);
+            quad.transform.localPosition = new Vector3(rangeX /2, 0, rangeZ/2);
+            quad.transform.localScale = new Vector3(rangeX, rangeZ, 1);
+            quad.transform.localEulerAngles = new Vector3(90, 0, 0);
+            mapTexture = new Texture2D(rangeX, rangeZ);
+            Material material = new Material(shader);
+            material.SetTexture("_MainTex", mapTexture);
+            Renderer renderer = quad.GetComponent<MeshRenderer>();
+            renderer.material = material;
 
-            for (int i = 0; i < count; ++i)
-            {
-                GameObject go = new GameObject(names[i]);
-                MeshRenderer renderType = go.AddComponent<MeshRenderer>();
-                mMat[i] = new Material(shader);
-                renderType.material = mMat[i];
-                MeshFilter meshFilterType = go.AddComponent<MeshFilter>();
-                Mesh mesh = new Mesh();
-                mMesh[i] = mesh;
-                meshFilterType.sharedMesh = mesh;
-                go.transform.parent = mRootGo.transform;
-                go.transform.localPosition = Vector3.zero;
-                go.transform.localScale = Vector3.one;
-                go.transform.localRotation = Quaternion.identity;
-            }
         }
-
 
         public void UpdateGridsData(Vector2Int[] pos, int newValue)
         {
@@ -118,64 +93,19 @@ namespace AillieoUtils.TiledMapEditor
 
         void UpdateGridInView()
         {
-            int count = Data.GetEnumCount();
-
-            if(null == mTriangle)
-            {
-                mTriangle = new List<int>[count];
-            }
-
-            for (int i = 0; i < count; ++i)
-                mMat[i].SetColor("_Color", Data.GetConfigColor(i));
-
-            int rangeZ = Data.Range.y;
             int rangeX = Data.Range.x;
+            int rangeZ = Data.Range.y;
 
-
-            for(int i = 0; i < count; ++i)
-            {
-                if (null == mTriangle[i])
-                    mTriangle[i] = new List<int>();
-                else
-                    mTriangle[i].Clear();
-            }
-
-            for (int i = 0; i < rangeX; ++i)
-                for (int j = 0; j < rangeZ; ++j)
+            for (int i = 0; i < rangeZ; ++i)
+                for (int j = 0; j < rangeX; ++j)
                 {
-                    int t = Data.GridData[i, j];
-
-                    AddQuad(mTriangle[t],i,j,rangeX,rangeZ);
+                    if (Data.GridData[i, j] >= 0)
+                    {
+                        int t = Data.GridData[i, j];
+                        mapTexture.SetPixel(i, j, Data.GetConfigColor(t));
+                    }
                 }
-
-            for (int i = 0; i < count; ++i)
-            {
-                if (null == mTriangle[i])
-                {
-                    continue;
-                }
-                mMesh[i].vertices = mVertices;
-                mMesh[i].triangles = mTriangle[i].ToArray();
-            }
-        }
-
-
-        public void AddQuad(List<int> list, int i, int j, int rangeX, int rangeZ)
-        {
-            // //////////////
-            // 2 ------- 34
-            // |       /  |
-            // |     /    |
-            // |   /      |
-            // 16 ------- 5
-            // //////////////
-
-            list.Add(i * (rangeZ + 1) + j);
-            list.Add(i * (rangeZ + 1) + j + 1);
-            list.Add((i + 1) * (rangeZ + 1) + j + 1);
-            list.Add((i + 1) * (rangeZ + 1) + j + 1);
-            list.Add((i + 1) * (rangeZ + 1) + j);
-            list.Add(i * (rangeZ + 1) + j);
+            mapTexture.Apply();
         }
 
 
