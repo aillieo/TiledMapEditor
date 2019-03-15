@@ -157,6 +157,7 @@ namespace AillieoUtils.TiledMapEditor
             var sv = SceneView.lastActiveSceneView;
             var range = tiledMapDataModifier.Data.Range;
             Vector3 center = new Vector3(range.x/2, 0, range.y/2);
+            sv.in2DMode = false;
             sv.LookAt(center, new Quaternion(1, 0, 0, 1), 200, true, false);
             sv.Repaint();
 

@@ -61,10 +61,12 @@ namespace AillieoUtils.TiledMapEditor
             GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
             quad.name = "quad";
             quad.transform.SetParent(mRootGo.transform, false);
-            quad.transform.localPosition = new Vector3(rangeX /2, 0, rangeZ/2);
+            quad.transform.localPosition = new Vector3(rangeX /2.0f, 0, rangeZ/2.0f);
             quad.transform.localScale = new Vector3(rangeX, rangeZ, 1);
             quad.transform.localEulerAngles = new Vector3(90, 0, 0);
-            mapTexture = new Texture2D(rangeX, rangeZ);
+            mapTexture = new Texture2D(rangeX, rangeZ, TextureFormat.ARGB32, false);
+            mapTexture.wrapMode = TextureWrapMode.Clamp;
+            mapTexture.filterMode = FilterMode.Point;
             Material material = new Material(shader);
             material.SetTexture("_MainTex", mapTexture);
             Renderer renderer = quad.GetComponent<MeshRenderer>();
