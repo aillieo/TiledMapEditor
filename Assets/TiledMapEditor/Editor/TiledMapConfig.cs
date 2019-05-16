@@ -43,7 +43,7 @@ namespace AillieoUtils.TiledMapEditor
             colors[enumValue] = color;
         }
 
-        public Dictionary<int, Color> GetColorMappings()
+        private Dictionary<int, Color> GetColorMappings()
         {
             var colors = new Dictionary<int, Color>();
             foreach (var i in Items)

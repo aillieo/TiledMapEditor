@@ -170,17 +170,7 @@ namespace AillieoUtils.TiledMapEditor
 
         void OnUnloadClick()
         {
-            if(null != tiledMapDataModifier)
-            {
-                tiledMapDataModifier.CleanUp();
-                tiledMapDataModifier = null;
-            }
-
-            if (null != goRoot)
-            {
-                DestroyImmediate(goRoot);
-                goRoot = null;
-            }
+            CleanUp();
 
             mIsEditing = false;
 
@@ -196,8 +186,24 @@ namespace AillieoUtils.TiledMapEditor
             }
         }
 
+        private void CleanUp()
+        {
+            if (null != tiledMapDataModifier)
+            {
+                tiledMapDataModifier.CleanUp();
+                tiledMapDataModifier = null;
+            }
+
+            if (null != goRoot)
+            {
+                DestroyImmediate(goRoot);
+                goRoot = null;
+            }
+        }
+
         private void OnDestroy()
         {
+            CleanUp();
             SceneView.onSceneGUIDelegate -= this.OnSceneGUI;
         }
 
